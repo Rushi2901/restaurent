@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
-<body {% block class %} class="sub_page" {% endblock class %}></body>>
+{% block class %} class="sub_page" {% endblock class %}>
+
+
 {% block body %}
-<!-- book section -->
+
 <section class="book_section layout_padding">
   <div class="container">
     <div class="heading_container">
@@ -61,6 +63,5 @@
     </div>
   </div>
 </section>
-<!-- end book section -->
+
 {% endblock body %}
-</body>
