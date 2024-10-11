@@ -1,11 +1,9 @@
-{% load static %}
 {% extends 'base.html' %}
+{% load static %}
 
 
-
-
-
-{% block body %}
+<body  {% block class %} class="sub_page" {% endblock class %}>
+  {% block body %}
   <!-- food section -->
 
   <section class="food_section layout_padding">
@@ -721,4 +719,7 @@
   </section>
 
 {% endblock body %}
+</body>
+
+
  
