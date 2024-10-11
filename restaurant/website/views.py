@@ -2,13 +2,13 @@ from django.shortcuts import render
 
 # Create your views here.
 def homeview(request):
-    return render(request,'menu.html' , {})
+    return render(request,'index.html' , {})
 
 def aboutview(request):
-    pass
+    return render(request,'about.html' , {})
 
 def menuview(request):
-    pass
+    return render(request,'menu.html' , {})
 
 def booktableview(request):
-    pass
+    return render(request,'booktable.html' , {})
