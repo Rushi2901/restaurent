@@ -56,17 +56,20 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav  mx-auto ">
-              <li class="nav-item active">
+              <li class="nav-item {% block home_status %}{% endblock home_status %}">
                 <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item  {% block menu_status %}{% endblock menu_status %}">
                 <a class="nav-link" href="{% url 'menu' %}">Menu</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item  {% block about_status %}{% endblock about_status %}">
                 <a class="nav-link" href="{% url 'about' %}">About</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item {% block booktable_status %}{% endblock booktable_status %}">
                 <a class="nav-link" href="{% url 'booktable' %}">Book Table</a>
+              </li>
+              <li class="nav-item  {% block feedback_status %}{% endblock feedback_status %}">
+                <a class="nav-link" href="{% url 'feedback' %}">Feedback</a>
               </li>
             </ul>
             <div class="user_option">

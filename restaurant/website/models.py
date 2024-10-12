@@ -22,16 +22,9 @@ class Item (models.Model):
 class Aboutus (models.Model):
     description = models.TextField(blank=False)
 
-class Feedback (models.Model):
-    user_name=models.CharField(max_length=20)
-    description= models.TextField(blank=False)
-    rating=models.IntegerField()
-
-    def __str__(self):
-        return self.user_name + "  rating" + self.rating
 
 
-class BookTbale (models.Model):
+class BookTable (models.Model):
     name = models.CharField(max_length=20)
     phone_no=models.IntegerField(blank=False)
     email=models.EmailField(blank=False)
@@ -40,3 +33,36 @@ class BookTbale (models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Offersection (models.Model):
+    name =  models.CharField(max_length=30)
+    percent_off = models.IntegerField(blank=False)
+    image = models.ImageField(upload_to='items/')
+
+    def save(self, *args, **kwargs):
+        # Check the number of existing records
+        if Item.objects.count() >= 2:
+            # Get the oldest record (or modify this logic if needed)
+            oldest_item = Item.objects.order_by('id').first()
+            # Update the oldest record's data
+            oldest_item.name = self.name
+            oldest_item.percent_off = self.percent_off
+            oldest_item.image = self.image
+            oldest_item.save()
+        else:
+            # If there are fewer than 2 records, create a new one
+            super().save(*args, **kwargs)   
+    def __str__(self):
+            return self.name + "  percent_off:" + str(self.percent_off)
+    
+
+
+class Feedback (models.Model):
+    email=models.EmailField(blank=True)
+    rating=models.IntegerField(blank=False)
+    review = models.TextField(blank=False)
+    image= models.ImageField(blank=True)
+
+    def __str__(self):
+        return self.email + "   rating:" +str(self.rating)

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+
+{% block feedback_status %}active{% endblock feedback_status %}
+{% block class %} class="sub_page" {% endblock class %}>
+
+
+{% block body %}
+
+<section class="book_section layout_padding">
+  <div class="container">
+    <div class="heading_container">
+      <h2>
+        Book A Table
+      </h2>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form_container">
+          <form action="{% url 'feedback' %}" method="POST" >
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            </div>
+
+            <div>
+                <select class="form-control nice-select wide" name="rating">
+                  <option value="" disabled selected>
+                    Rating
+                  </option>
+                  <option value="2">
+                    2
+                  </option>
+                  <option value="3">
+                    3
+                  </option>
+                  <option value="4">
+                    4
+                  </option>
+                  <option value="5">
+                    5
+                  </option>
+                </select>
+              </div>
+
+
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label"> Describe your Experience</label>
+                <textarea class="form-control" name="comment" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+
+            <div>
+                <label for="formFileLg" class="form-label">Select image</label>
+                <input class="form-control form-control-lg" name="image" id="formFileLg" type="file">
+            </div>
+            <div class="btn_box">
+              <button>
+                Submit Now
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="map_container ">
+          <div id="googleMap"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock body %}
