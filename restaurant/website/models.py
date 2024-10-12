@@ -66,3 +66,5 @@ class Feedback (models.Model):
 
     def __str__(self):
         return self.email + "   rating:" +str(self.rating)
+    
+class Footer (models.Model):
