@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+
 
 # Create your models here.
 class Category (models.Model):
@@ -68,3 +70,18 @@ class Feedback (models.Model):
         return self.email + "   rating:" +str(self.rating)
     
 class Footer (models.Model):
+    phone =models.IntegerField(max_length=10 ,blank=False)
+    email = models.EmailField(blank=True)
+    about = models.CharField(max_length=100 , blank=False)
+    copyright = models.CharField(max_length=40 , blank=False)
+    opening_days = models.CharField(max_length=50 , blank=False)
+    opening_time_from =models.IntegerField(max_length=2 )
+    opening_time_to =models.IntegerField(max_length=2)
+
+    def clean(self) :
+        if not (0< self.opening_time_from >13) and not (0< self.opening_time_to >13):
+            raise ValidationError("Hour must be from 1 and 12.")
+        
+    def save(self, *arg,**kwarg):
+        self.clean()
+        return super().save(*arg,**kwarg)
