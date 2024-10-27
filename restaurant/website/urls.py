@@ -24,4 +24,8 @@ urlpatterns = [
     path('menu', views.menuview ,name='menu' ),
     path('booktable', views.booktableview ,name='booktable' ),
     path('feedback', views.feedback ,name='feedback' ),
+    path('cart', views.cart ,name='cart' ),
+    path('loginform', views.loginform ,name='loginform' ),
+    path('register', views.register ,name='register' ),
+    path('logout', views.logoutUser ,name='logout' ),
 ]

@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block cart %}
+<div class="cart-container">
+    <div class="cart-items">
+        <div class="cart-item">
+            <img src="path/to/sandals-image.jpg" alt="Sandals" class="cart-item-image">
+            <div class="cart-item-details">
+                <h3>Sandals</h3>
+                <p>#716539702001</p>
+                <p>Size 39 - Color: White</p>
+            </div>
+            <div class="cart-item-price">$99.99</div>
+            <div class="cart-item-qty">
+                <button class="qty-btn">-</button>
+                <span>1</span>
+                <button class="qty-btn">+</button>
+            </div>
+            <div class="cart-item-total">$99.99</div>
+            <button class="remove-item">✖</button>
+        </div>
+
+        <div class="cart-item">
+            <img src="path/to/zebra-purse-image.jpg" alt="Zebra purse" class="cart-item-image">
+            <div class="cart-item-details">
+                <h3>Zebra purse</h3>
+                <p>#327699002001</p>
+                <p>Size: One Size - Color: Black Mix</p>
+            </div>
+            <div class="cart-item-price">$29.96</div>
+            <div class="cart-item-qty">
+                <button class="qty-btn">-</button>
+                <span>2</span>
+                <button class="qty-btn">+</button>
+            </div>
+            <div class="cart-item-total">$59.92</div>
+            <button class="remove-item">✖</button>
+        </div>
+
+        <div class="cart-item">
+            <img src="path/to/knitted-top-image.jpg" alt="Knitted top" class="cart-item-image">
+            <div class="cart-item-details">
+                <h3>Knitted top</h3>
+                <p>#716537002001</p>
+                <p>Size: S - Color: Powder Pink</p>
+            </div>
+            <div class="cart-item-price">$29.99</div>
+            <div class="cart-item-qty">
+                <button class="qty-btn">-</button>
+                <span>1</span>
+                <button class="qty-btn">+</button>
+            </div>
+            <div class="cart-item-total">$29.99</div>
+            <button class="remove-item">✖</button>
+        </div>
+        <div class="cart-item">
+            <img src="path/to/knitted-top-image.jpg" alt="Knitted top" class="cart-item-image">
+            <div class="cart-item-details">
+                <h3>Knitted top</h3>
+                <p>#716537002001</p>
+                <p>Size: S - Color: Powder Pink</p>
+            </div>
+            <div class="cart-item-price">$29.99</div>
+            <div class="cart-item-qty">
+                <button class="qty-btn">-</button>
+                <span>1</span>
+                <button class="qty-btn">+</button>
+            </div>
+            <div class="cart-item-total">$29.99</div>
+            <button class="remove-item">✖</button>
+        </div>
+        <div class="cart-item">
+            <img src="path/to/knitted-top-image.jpg" alt="Knitted top" class="cart-item-image">
+            <div class="cart-item-details">
+                <h3>Knitted top</h3>
+                <p>#716537002001</p>
+                <p>Size: S - Color: Powder Pink</p>
+            </div>
+            <div class="cart-item-price">$29.99</div>
+            <div class="cart-item-qty">
+                <button class="qty-btn">-</button>
+                <span>1</span>
+                <button class="qty-btn">+</button>
+            </div>
+            <div class="cart-item-total">$29.99</div>
+            <button class="remove-item">✖</button>
+        </div>
+        <div class="cart-item">
+            <img src="path/to/knitted-top-image.jpg" alt="Knitted top" class="cart-item-image">
+            <div class="cart-item-details">
+                <h3>Knitted top</h3>
+                <p>#716537002001</p>
+                <p>Size: S - Color: Powder Pink</p>
+            </div>
+            <div class="cart-item-price">$29.99</div>
+            <div class="cart-item-qty">
+                <button class="qty-btn">-</button>
+                <span>1</span>
+                <button class="qty-btn">+</button>
+            </div>
+            <div class="cart-item-total">$29.99</div>
+            <button class="remove-item">✖</button>
+        </div>
+    </div>
+
+    <div class="cart-summary">
+        <h2>Cart Total: $189.90</h2>
+        <p>Shipping & taxes calculated at checkout</p>
+        <label>
+            <input type="checkbox" required>
+            I agree to <a href="#">Terms & Conditions</a>
+        </label>
+        <div class="checkout-buttons">
+            <button class="checkout">Checkout</button>
+            <button class="paypal">PayPal</button>
+        </div>
+        <div class="note-section">
+            <h3>Add a note</h3>
+            <textarea placeholder="Some words to In House team"></textarea>
+        </div>
+    </div>
+</div>
+
+{% endblock cart %}
