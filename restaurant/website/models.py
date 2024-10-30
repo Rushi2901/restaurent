@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-
+from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 class Category (models.Model):
@@ -101,3 +102,13 @@ from django.db import models
 
 # 	def __str__(self):
 # 		return(f"{self.first_name} {self.last_name}")
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Item, on_delete=models.CASCADE)  # Assume you have a Product model
+    quantity = models.IntegerField(default=1)

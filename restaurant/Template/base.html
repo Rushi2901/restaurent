@@ -94,9 +94,9 @@
 
                 {% endif %}
 
-+            </div>
+          </div>
               
-              <a class="cart_link" href="{% url 'cart' %}">
+              <a class="cart_link" href="{% url 'updatecart' %}">
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                   <g>
                     <g>
@@ -253,6 +253,64 @@
   <!-- nice select -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
   <!-- custom js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+  function AddCartCard(action, itemId, change = 0) {  
+    $.ajax({
+        type: "POST",
+        url: "{% url 'updatecart' %}",
+        headers: {
+                "X-CSRFToken": "{{ csrf_token }}" // Assuming you have csrftoken set correctly
+            },
+        data: JSON.stringify({
+            action: 'add',  // or 'remove' or 'delete'
+            item_id: itemId,
+            change: change
+        }),
+        contentType: "application/json",
+        success: function(response) {
+            if (response.success) {
+              console.log(response)
+                // Clear existing cart items display
+                $('.cart-items').empty();
+                
+                // Loop through items and append to cart display
+                response.items.forEach(item => {
+                    $('.cart-items').append(`
+                        <div class="cart-item">
+                            <img src="${item.image}" alt="" class="cart-item-image">
+                            <div class="cart-item-details">
+                                <h3>${item.title}</h3>
+                                <p>: ${item.description}</p>
+                                
+                            </div>
+                            <div class="cart-item-price">₹${item.price.toFixed(2)}</div>
+                                        <div class="cart-item-qty">
+                            <button  onclick="AddCartCard('remove',{{ item.id }}, 1)" class="qty-btn">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="AddCartCard('remove',{{ item.id }})" class="qty-btn">+</button>
+                            </div>
+                            <div class="cart-item-total">₹${item.total_price.toFixed(2)}</div>
+                            <button onclick="AddCartCard('delete',{{ item.id }})" class="remove-item">✖</button>
+                        </div>
+                    `);
+                });
+
+                // Update total cost displayed in the cart
+                $('#cart-total').text(`Total Cost: ₹${response.total_cost.toFixed(2)}`);
+            } else {
+                alert(response.message); // Handle errors
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX error:", error);
+        }
+    });
+  }
+
+ </script>
+
+
   <script src="{% static 'js/custom.js' %}"></script>
   <!-- Google Map -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
