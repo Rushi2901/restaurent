@@ -1,34 +1,35 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
 {% block menu_status %}active{% endblock menu_status %}
 {% block class %} class="sub_page" {% endblock class %}
-  {% block body %}
 
-<div class="cart-container">
+{% block body %}
+<div class="cart-container" id="cart-container" data-update-url="{% url 'updatecart' %}">
     <div class="cart-items">
-        <div class="cart-item">
-            <img src="path/to/sandals-image.jpg" alt="Sandals" class="cart-item-image">
-            <div class="cart-item-details">
-                <h3>Sandals</h3>
-                <p>#716539702001</p>
-               
+        {% for item in items %}
+            <div class="cart-item">
+                <img src="{{ item.image }}" alt="" class="cart-item-image">
+                <div class="cart-item-details">
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item.description }}</p>
+                </div>
+                <div class="cart-item-price">₹{{ item.price }}</div>
+                <div class="cart-item-qty">
+                    <button onclick="AddCartCard('remove', {{ item.id }}, 1)" class="qty-btn">-</button>
+                    <span>{{ item.quantity }}</span>
+                    <button onclick="AddCartCard('add', {{ item.id }}, 1)" class="qty-btn">+</button>
+                </div>
+                <div class="cart-item-total">₹{{ item.total_price }}</div>
+                <button onclick="AddCartCard('delete', {{ item.id }})" class="remove-item">✖</button>
             </div>
-            <div class="cart-item-price">$99.99</div>
-            <div class="cart-item-qty">
-                <button  onclick="AddCartCard('remove',{{ item.id }}, 1)" class="qty-btn">-</button>
-                <span>1</span>
-                <button onclick="AddCartCard('remove',{{ item.id }})" class="qty-btn">+</button>
-            </div>
-            <div class="cart-item-total">$99.99</div>
-            <button onclick="AddCartCard('delete',{{ item.id }})" class="remove-item">✖</button>
-        </div>
-
+        {% empty %}
+            <p>Your cart is empty.</p>
+        {% endfor %}
     </div>
 
     <div class="cart-summary">
-        <h2 id="cart-total">Cart Total: $189.90</h2>
+        <h2 id="cart-total">Total Cost: ₹{{ total_cost }}</h2>
         <p>Shipping & taxes calculated at checkout</p>
         <label>
             <input type="checkbox" required>
@@ -45,4 +46,6 @@
     </div>
 </div>
 
+<!-- Include the cart JavaScript file -->
+<script src="{% static 'js/cart.js' %}"></script>
 {% endblock body %}

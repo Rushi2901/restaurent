@@ -1138,3 +1138,147 @@ a:focus {
 .user_link {
     color: black; /* Default icon color */
 }
+
+
+/* Main container for the cart */
+.cart-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Cart items section */
+.cart-items {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Medium size for the image */
+.cart-item-image {
+  width: 120px;
+  height: auto;
+  margin-right: 15px;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+/* Align price, quantity controls, total amount, and delete button in a row */
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cart-item-price,
+.cart-item-total {
+  font-weight: bold;
+}
+
+.cart-item-qty {
+  display: flex;
+  align-items: center;
+}
+
+.qty-btn {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: #f4f4f4;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.remove-item {
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  color: red;
+  background: none;
+}
+
+/* Checkout section */
+.cart-summary {
+  flex: 1;
+  margin-top: 0;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.checkout-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.checkout,
+.paypal {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.checkout {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.paypal {
+  background-color: #0070BA;
+  color: #fff;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .cart-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .cart-summary {
+    margin-top: 20px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Keep image, details, and controls aligned horizontally */
+  .cart-item-controls {
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Adjust image size for mobile view */
+  .cart-item-image {
+    width: 100px;
+    margin-bottom: 10px;
+  }
+
+  .checkout-buttons {
+    flex-direction: column;
+  }
+
+  .checkout,
+  .paypal {
+    width: 100%;
+    margin-top: 10px;
+  }
+}

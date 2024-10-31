@@ -180,76 +180,69 @@ def loginform (request):
 
 @login_required
 def updatecart(request):
-    if request.method == 'POST':
+    # Get or create the cart for the user once
+    cart, _ = Cart.objects.get_or_create(user=request.user)
+    
+    def get_cart_items():
+        cart_items = CartItem.objects.filter(cart=cart)
+        return [
+            {
+                'id': item.product.id,
+                'title':item.product.item_name,
+                'image': item.product.image.url,
+                'description': item.product.description,
+                'quantity': item.quantity,
+                'price': item.product.price,
+                'total_price': item.quantity * item.product.price,
+            } for item in cart_items
+        ], sum(item.quantity * item.product.price for item in cart_items)
+
+    # For GET requests, render the HTML page
+    if request.method == 'GET':
+        items, total_cost = get_cart_items()
+        return render(request, 'cart.html', {'items': items, 'total_cost': total_cost})
+
+    # Handle POST requests for AJAX cart updates
+    elif request.method == 'POST':
         try:
             # Parse JSON data from request body
             data = json.loads(request.body.decode('utf-8'))
             action = data.get('action') 
-            print(action +'data is processed')
+            print(action)
             item_id = data.get('item_id')
-            print(item_id)
             change = data.get('change', 0)
 
-            # Validate item_id
+            # Validate item_id and retrieve product
             if not item_id:
                 return JsonResponse({'success': False, 'message': 'Invalid item_id'}, status=400)
-
             product = get_object_or_404(Item, id=item_id)
-
-
-            # Get or create a cart for the current user
-            cart, _ = Cart.objects.get_or_create(user=request.user)
-
+            print(product)
+            # Update cart items based on action
+            cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
             if action == 'add':
-                change = int(change)  # Convert change to an integer
-                if change <= 0:
-                    return JsonResponse({'success': False, 'message': 'Change must be a positive integer'}, status=400)
-
-                # Check if the item is already in the cart
-                cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-
-                # Update the quantity
-                cart_item.quantity += change
-                print(cart_item)
+                cart_item.quantity += max(1, int(change))
+                print('product add')
                 cart_item.save()
-
-            elif action == 'remove':
-                cart_item = CartItem.objects.filter(cart=cart, product__id=item_id).first()
-                if cart_item:
-                    if cart_item.quantity > 1:
-                        cart_item.quantity -= 1
-                        cart_item.save()
-                    else:
-                        cart_item.delete()
-
+            elif action == 'remove' and cart_item.quantity > 1:
+                cart_item.quantity -= 1
+                print('product subtract')
+                cart_item.save()
             elif action == 'delete':
-                cart_item = CartItem.objects.filter(cart=cart, product__id=item_id).first()
-                if cart_item:
-                    cart_item.delete()
+                print('product delete')
+                cart_item.delete()
 
-            # Prepare response with updated cart details
-            cart_items = CartItem.objects.filter(cart=cart)
+            # Get updated cart items and total cost for the response
+            items, total_cost = get_cart_items()
             response_data = {
                 'success': True,
-                'items': [
-                    {
-                        'id': item.product.id,
-                        'image': item.product.image.url,
-                        'description': item.product.description,
-                        'quantity': item.quantity,
-                        'price': item.product.price,
-                        'total_price': item.quantity * item.product.price,
-                    } for item in cart_items
-                ],
-                'total_cost': sum(item.quantity * item.product.price for item in cart.items.all())
+                'items': items,
+                'total_cost': total_cost
             }
 
-            # Check if the request is an AJAX call
+            # Return JSON response for AJAX requests
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                print('response render')
                 return JsonResponse(response_data)
-            
-            # For non-AJAX requests, render the full template
-            return render(request, 'cart/cart_page.html', {'cart': cart})
 
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
@@ -283,5 +276,3 @@ def register(request):
 def logoutUser (request):
     logout(request)
     return redirect('home')
-def cartpage(request):
-    return render(request,'cart.html',{})

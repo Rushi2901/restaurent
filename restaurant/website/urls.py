@@ -25,7 +25,7 @@ urlpatterns = [
     path('booktable', views.booktableview ,name='booktable' ),
     path('feedback', views.feedback ,name='feedback' ),
     path('updatecart', views.updatecart, name='updatecart'),
-    path('cartpage', views.cartpage, name='cartpage'),
+    
     path('loginform', views.loginform ,name='loginform' ),
     path('register', views.register ,name='register' ),
     path('logout', views.logoutUser ,name='logout' ),
