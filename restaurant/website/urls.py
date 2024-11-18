@@ -29,4 +29,7 @@ urlpatterns = [
     path('loginform', views.loginform ,name='loginform' ),
     path('register', views.register ,name='register' ),
     path('logout', views.logoutUser ,name='logout' ),
+    path('success/', views.success ,name='success' ),
+    path('cancel/', views.cancel ,name='cancel' ),
+    path('checkout_session', views.checkout_session ,name='checkout_session' ),
 ]

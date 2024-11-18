@@ -36,7 +36,10 @@
             I agree to <a href="#">Terms & Conditions</a>
         </label>
         <div class="checkout-buttons">
-            <button class="checkout">Checkout</button>
+            <form action="{% url 'checkout_session' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="checkout">Checkout</button>
+            </form>
             <button class="paypal">PayPal</button>
         </div>
         <div class="note-section">

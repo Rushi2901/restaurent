@@ -7,6 +7,12 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 import json
+import stripe
+from decimal import Decimal
+from django.conf import settings
+
+stripe.api_key = 'sk_test_51QGfwUK8DvyAuoeWIgMTCXSAAob1kUP43wRTImTlOCyd507czp4eRPTWjU8Gukba8z8Y5WcPMC2lG0elbKUV1qUS00ImkcPZ5T'
+DOMAIN = settings.DOMAIN
 
 
 # Create your views here.
@@ -276,3 +282,79 @@ def register(request):
 def logoutUser (request):
     logout(request)
     return redirect('home')
+
+
+
+def checkout_session(request):
+    if request.method == 'POST':
+        try:
+            user_email = request.user.email
+            user = Cart.objects.get(user=request.user)
+
+            def get_cart_items():
+                cart_items = CartItem.objects.filter(cart=user)
+                return [
+                    {
+                        'id': item.product.id,
+                        'title': item.product.item_name,
+                        'image': 'https://1d3d-2409-40c0-1005-e586-e1eb-11c4-851a-470.ngrok-free.app/' + item.product.image.url,
+                        'description': item.product.description,
+                        'quantity': item.quantity,
+                        'price': item.product.price,
+                        'total_price': item.quantity * item.product.price,
+                    } for item in cart_items
+                ]
+
+            cart_item = get_cart_items()
+            line_items = []
+
+            for item in cart_item:
+                product_price = item['price'] * 100  # Convert to cents
+                line_items.append(
+                    {
+                        'price_data': {
+                            'currency': 'usd',
+                            'unit_amount': int(product_price),
+                            'product_data': {
+                                'name': item['title'],
+                                'description': item['description'],
+                                'images': [item['image']],
+                            },
+                        },
+                        'quantity': int(item['quantity']),
+                    }
+                )
+
+            success_url = 'https://1d3d-2409-40c0-1005-e586-e1eb-11c4-851a-470.ngrok-free.app/success/'  # Your ngrok URL
+            cancel_url = 'https://1d3d-2409-40c0-1005-e586-e1eb-11c4-851a-470.ngrok-free.app/cancel/'    # Your ngrok URL
+            # Ensure this is a valid URL
+
+            print("Line items:", line_items)  # Debugging output
+            print("Success URL:", success_url)  # Debugging output
+            print("Cancel URL:", cancel_url)    # Debugging output
+
+            # Create a Stripe checkout session
+            checkout_session = stripe.checkout.Session.create(
+                line_items=line_items,
+                mode='payment',
+                billing_address_collection='required',
+                success_url= success_url,
+                cancel_url= cancel_url ,
+                customer_email=user_email,
+            )
+
+            return redirect(checkout_session.url)
+        except Exception as error:
+            print(f"Error creating checkout session: {error}")  # Print error details
+            return render(request, 'error.html', {'error': str(error)})
+
+    return render(request, 'error.html')
+
+
+def success(request):
+    return render(request,'success.html')
+
+def cancel(request):
+    return render(request,'error.html')
+
+
