@@ -126,18 +126,20 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.product_name} x {self.quantity}"
 
-# ----------------------------------------------------------------------------------------
+
+from django.contrib import admin
+from .models import OrderDetails, OrderItem
 
 # Inline for OrderItem
-class OrderItemInline(admin.TabularInline):  # TabularInline for a table-like layout
+class OrderItemInline(admin.TabularInline):  # Use TabularInline for a table-like layout
     model = OrderItem
     extra = 0  # No empty extra forms will be shown
-    fields = ['product_name', 'quantity', 'unit_price']  
-    
+    fields = ['product_name', 'quantity', 'unit_price']  # Customize the fields you want to show
+
 # Admin for OrderDetails
 class OrderDetailsAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'customer_username', 'total_amount', 'currency', 'status', 'created_at')
-    search_fields = ('order_id', 'customer_username')
+    list_display = ('order_id', 'customer_email', 'total_amount', 'currency', 'status', 'created_at')
+    search_fields = ('order_id', 'customer_email')
     inlines = [OrderItemInline]  # Display OrderItems inline as a table
 
 # Admin for OrderItem (optional, depending on if you need to edit items directly in the admin)

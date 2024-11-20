@@ -411,6 +411,15 @@ def stripe_webhook(request):
                 unit_price=total_amount,  # Adjust this based on your price logic
             )
             idx += 1
+        user = User.objects.get(email=user_email)
+        if user:
+                    try:
+                        cart = Cart.objects.get(user=user)
+                        cart.items.all().delete()  # Delete all cart items for the user
+                        cart.delete()  # Optionally delete the cart itself
+                    except Cart.DoesNotExist:
+                        print('No cart found for user')
+                        # Handle the case if no cart exists for the user
 
     return HttpResponse(status=200)
 
