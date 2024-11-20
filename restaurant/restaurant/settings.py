@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',          # localhost
     'localhost',          # Also allow localhost
-    '1d3d-2409-40c0-1005-e586-e1eb-11c4-851a-470.ngrok-free.app',  # Your ngrok URL
+    'a63b-2409-40c0-12-97bd-dc97-bd4-832e-adf9.ngrok-free.app'  # Your ngrok URL
 ]
 
 
@@ -137,13 +137,13 @@ MEDIA_ROOT = BASE_DIR /'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-STRIPE_SECRET_KEY = 'sk_test_51QGfwUK8DvyAuoeW7o0pwxFkDGqsXnwFtQjZL9qdNhn2sFz2eIipwMHnLKEvzqH22kbOfIUHIgwfbtlaiZn9owuO00jEIJMxeV'
-
+STRIPE_SECRET_KEY = 'sk_test_51QGfwUK8DvyAuoeWIgMTCXSAAob1kUP43wRTImTlOCyd507czp4eRPTWjU8Gukba8z8Y5WcPMC2lG0elbKUV1qUS00ImkcPZ5T'
+WEBHOOK_SECRET_KEY = 'whsec_xQt2dfuYOmkWfAaurJXpowTro4JYv1BU'
 DOMAIN = "http://127.0.0.1:8000/"
-
+NGROK_URL='https://a63b-2409-40c0-12-97bd-dc97-bd4-832e-adf9.ngrok-free.app/'
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',  # For localhost
     'https://localhost',  # For localhost
-    'https://1d3d-2409-40c0-1005-e586-e1eb-11c4-851a-470.ngrok-free.app',  # Your ngrok URL
+    'https://386e-2409-40c0-1b-53f6-8ddd-e8bf-8159-1714.ngrok-free.app',  # Your ngrok URL
 ]

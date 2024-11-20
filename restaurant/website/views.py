@@ -8,11 +8,13 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 import json
 import stripe
-from decimal import Decimal
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 from django.conf import settings
 
-stripe.api_key = 'sk_test_51QGfwUK8DvyAuoeWIgMTCXSAAob1kUP43wRTImTlOCyd507czp4eRPTWjU8Gukba8z8Y5WcPMC2lG0elbKUV1qUS00ImkcPZ5T'
+stripe.api_key = settings.STRIPE_SECRET_KEY
 DOMAIN = settings.DOMAIN
+ngrok_url = settings.NGROK_URL
 
 
 # Create your views here.
@@ -222,7 +224,7 @@ def updatecart(request):
             if not item_id:
                 return JsonResponse({'success': False, 'message': 'Invalid item_id'}, status=400)
             product = get_object_or_404(Item, id=item_id)
-            print(product)
+           
             # Update cart items based on action
             cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
             if action == 'add':
@@ -297,7 +299,7 @@ def checkout_session(request):
                     {
                         'id': item.product.id,
                         'title': item.product.item_name,
-                        'image': 'https://1d3d-2409-40c0-1005-e586-e1eb-11c4-851a-470.ngrok-free.app/' + item.product.image.url,
+                        'image': ngrok_url + item.product.image.url,
                         'description': item.product.description,
                         'quantity': item.quantity,
                         'price': item.product.price,
@@ -325,11 +327,11 @@ def checkout_session(request):
                     }
                 )
 
-            success_url = 'https://1d3d-2409-40c0-1005-e586-e1eb-11c4-851a-470.ngrok-free.app/success/'  # Your ngrok URL
-            cancel_url = 'https://1d3d-2409-40c0-1005-e586-e1eb-11c4-851a-470.ngrok-free.app/cancel/'    # Your ngrok URL
+            success_url =  ngrok_url + 'success/'  # Your ngrok URL
+            cancel_url = ngrok_url+'cancel/'    # Your ngrok URL
             # Ensure this is a valid URL
 
-            print("Line items:", line_items)  # Debugging output
+            
             print("Success URL:", success_url)  # Debugging output
             print("Cancel URL:", cancel_url)    # Debugging output
 
@@ -350,6 +352,36 @@ def checkout_session(request):
 
     return render(request, 'error.html')
 
+
+
+@csrf_exempt 
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
+    endpoint_secret = settings.WEBHOOK_SECRET_KEY  # Get this from Stripe Dashboard
+
+    try:
+        # Verify the event
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload
+        print(f"Invalid payload: {e}")
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        print(f"Signature verification failed: {e}")
+        return HttpResponse(status=400)
+
+
+
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+        print(f"Checkout session completed: {session}")
+
+    # Return a 200 response to Stripe
+    return HttpResponse(status=200)
 
 def success(request):
     return render(request,'success.html')
