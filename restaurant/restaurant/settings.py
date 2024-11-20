@@ -145,5 +145,5 @@ NGROK_URL='https://a63b-2409-40c0-12-97bd-dc97-bd4-832e-adf9.ngrok-free.app/'
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',  # For localhost
     'https://localhost',  # For localhost
-    'https://386e-2409-40c0-1b-53f6-8ddd-e8bf-8159-1714.ngrok-free.app',  # Your ngrok URL
+    'https://a63b-2409-40c0-12-97bd-dc97-bd4-832e-adf9.ngrok-free.app',  # Your ngrok URL
 ]

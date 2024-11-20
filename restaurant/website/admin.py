@@ -11,4 +11,7 @@ admin.site.register(Offersection)
 admin.site.register(Footer)
 admin.site.register(Cart)
 admin.site.register(CartItem)
-# admin.site.register(UserDetail)
+
+# Register OrderDetails and OrderItem models with their respective admins
+admin.site.register(OrderDetails, OrderDetailsAdmin)  # Custom admin for OrderDetails
+admin.site.register(OrderItem, OrderItemAdmin)  # Custom admin for OrderItem

@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.contrib import admin
 
 # Create your models here.
 class Category (models.Model):
@@ -90,19 +91,6 @@ class Footer (models.Model):
 from django.db import models
 
 
-# class UserDetail(models.Model):
-# 	first_name = models.CharField(max_length=50)
-# 	last_name =  models.CharField(max_length=50)
-# 	email =  models.EmailField()
-# 	phone = models.CharField(max_length=15)
-# 	address =  models.CharField(max_length=100)
-# 	city =  models.CharField(max_length=50)
-# 	state =  models.CharField(max_length=50)
-# 	zipcode =  models.CharField(max_length=20)
-
-# 	def __str__(self):
-# 		return(f"{self.first_name} {self.last_name}")
-
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -112,3 +100,48 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Item, on_delete=models.CASCADE)  # Assume you have a Product model
     quantity = models.IntegerField(default=1)
+
+
+
+
+class OrderDetails(models.Model):
+    order_id = models.CharField(max_length=100, unique=True)
+    customer_email = models.EmailField()
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.CharField(max_length=10)
+    status = models.CharField(max_length=20, default="Pending")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Order {self.order_id} - {self.status}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(OrderDetails, related_name="orderitems", on_delete=models.CASCADE)
+    product_id = models.IntegerField()
+    product_name = models.CharField(max_length=255)
+    quantity = models.IntegerField()
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.product_name} x {self.quantity}"
+
+# ----------------------------------------------------------------------------------------
+
+# Inline for OrderItem
+class OrderItemInline(admin.TabularInline):  # TabularInline for a table-like layout
+    model = OrderItem
+    extra = 0  # No empty extra forms will be shown
+    fields = ['product_name', 'quantity', 'unit_price']  
+    
+# Admin for OrderDetails
+class OrderDetailsAdmin(admin.ModelAdmin):
+    list_display = ('order_id', 'customer_username', 'total_amount', 'currency', 'status', 'created_at')
+    search_fields = ('order_id', 'customer_username')
+    inlines = [OrderItemInline]  # Display OrderItems inline as a table
+
+# Admin for OrderItem (optional, depending on if you need to edit items directly in the admin)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('product_name', 'quantity', 'unit_price', 'order')
+    search_fields = ('product_name', 'order__order_id')
+

@@ -318,6 +318,7 @@ def checkout_session(request):
                             'currency': 'usd',
                             'unit_amount': int(product_price),
                             'product_data': {
+
                                 'name': item['title'],
                                 'description': item['description'],
                                 'images': [item['image']],
@@ -326,6 +327,11 @@ def checkout_session(request):
                         'quantity': int(item['quantity']),
                     }
                 )
+            metadata = {}
+            for idx, item in enumerate(cart_item):
+                metadata[f"product_{idx}_id"] = item["id"]
+                metadata[f"product_{idx}_name"] = item["title"]
+                metadata[f"product_{idx}_quantity"] = item["quantity"]
 
             success_url =  ngrok_url + 'success/'  # Your ngrok URL
             cancel_url = ngrok_url+'cancel/'    # Your ngrok URL
@@ -343,6 +349,7 @@ def checkout_session(request):
                 success_url= success_url,
                 cancel_url= cancel_url ,
                 customer_email=user_email,
+                metadata=metadata,
             )
 
             return redirect(checkout_session.url)
@@ -378,10 +385,36 @@ def stripe_webhook(request):
 
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
-        print(f"Checkout session completed: {session}")
 
-    # Return a 200 response to Stripe
+        user_email = session.get("customer_email")
+        metadata = session.get("metadata", {})
+        total_amount = session.get("amount_total") / 100  # Convert cents to dollars
+        currency = session.get("currency")
+        print( user_email , metadata,total_amount,currency)
+        # Save order
+        order = OrderDetails.objects.create(
+            customer_email=User.objects.get(email=user_email),
+            order_id=session["id"],
+            total_amount=total_amount,
+            currency=currency,
+            status="Paid",
+        )
+
+        # Save order items
+        idx = 0
+        while f"product_{idx}_id" in metadata:
+            OrderItem.objects.create(
+                order=order,
+                product_id=metadata[f"product_{idx}_id"],
+                product_name=metadata[f"product_{idx}_name"],
+                quantity=int(metadata[f"product_{idx}_quantity"]),
+                unit_price=total_amount,  # Adjust this based on your price logic
+            )
+            idx += 1
+
     return HttpResponse(status=200)
+
+
 
 def success(request):
     return render(request,'success.html')
