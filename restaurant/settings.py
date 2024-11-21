@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',          # localhost
     'localhost',          # Also allow localhost
-    'a63b-2409-40c0-12-97bd-dc97-bd4-832e-adf9.ngrok-free.app'  # Your ngrok URL
+    'restaurent-0ac8.onrender.com' , # Your ngrok URL
 ]
 
 
@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'restaurant.urls'
