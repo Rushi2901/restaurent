@@ -141,10 +141,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STRIPE_SECRET_KEY = 'sk_test_51QGfwUK8DvyAuoeWIgMTCXSAAob1kUP43wRTImTlOCyd507czp4eRPTWjU8Gukba8z8Y5WcPMC2lG0elbKUV1qUS00ImkcPZ5T'
 WEBHOOK_SECRET_KEY = 'whsec_xQt2dfuYOmkWfAaurJXpowTro4JYv1BU'
 DOMAIN = "http://127.0.0.1:8000/"
-NGROK_URL='https://a63b-2409-40c0-12-97bd-dc97-bd4-832e-adf9.ngrok-free.app/'
+NGROK_URL='https://restaurent-0ac8.onrender.com/'  # this is a live website url i am not changing varibles here
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',  # For localhost
     'https://localhost',  # For localhost
-    'https://a63b-2409-40c0-12-97bd-dc97-bd4-832e-adf9.ngrok-free.app',  # Your ngrok URL
+    'https://restaurent-0ac8.onrender.com',  # Your ngrok URL
 ]
