@@ -157,6 +157,7 @@
         <ul class="filters_menu">
           <li class="active" data-filter="*">All</li>
           {% for cat in category %}
+          
           <li data-filter=".{{ cat.category_name }}">{{ cat.category_name }}</li>
   
           {% endfor %}
