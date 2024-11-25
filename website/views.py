@@ -154,7 +154,7 @@ def updatecart(request):
             action = data.get('action') 
             print(action)
             item_id = data.get('item_id')
-            change = data.get('change', 0)
+            
 
             # Validate item_id and retrieve product
             if not item_id:
@@ -164,7 +164,7 @@ def updatecart(request):
             # Update cart items based on action
             cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
             if action == 'add':
-                cart_item.quantity += max(1, int(change))
+                cart_item.quantity += 1
                 print('product add')
                 cart_item.save()
             elif action == 'remove' and cart_item.quantity > 1:
