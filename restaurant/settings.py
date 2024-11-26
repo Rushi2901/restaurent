@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,7 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'website.apps.WebsiteConfig',
-    'csp'
+    'csp',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -84,11 +91,14 @@ WSGI_APPLICATION = 'restaurant.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),        
+        'USER': os.getenv('DB_USER'),        
+        'PASSWORD': os.getenv('DB_PASSWORD'),  
+        'HOST': os.getenv('DB_HOST'),        
+        'PORT': os.getenv('DB_PORT', '5432'), 
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -124,9 +134,33 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+# Database Configuration
+DATABASES = {
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+}
+
+# Cloudinary Configuration
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET')
+)
+
+# Media storage settings using Cloudinary
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+MEDIA_URL = f'https://res.cloudinary.com/{os.getenv("CLOUDINARY_CLOUD_NAME")}/'
+
+
+
+
+
 
 MEDIA_URL = '/media/'
 
@@ -141,8 +175,9 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+# STRIPE_SECRET_KEY =os.getenv('STRIPE_SECRET_KEY')
 STRIPE_SECRET_KEY = 'sk_test_51QGfwUK8DvyAuoeWIgMTCXSAAob1kUP43wRTImTlOCyd507czp4eRPTWjU8Gukba8z8Y5WcPMC2lG0elbKUV1qUS00ImkcPZ5T'
+# WEBHOOK_SECRET_KEY =os.getenv('WEBHOOK_SECRET_KEY')
 WEBHOOK_SECRET_KEY = 'whsec_xQt2dfuYOmkWfAaurJXpowTro4JYv1BU'
 DOMAIN = "http://127.0.0.1:8000/"
 NGROK_URL='https://restaurent-0ac8.onrender.com/'  # this is a live website url i am not changing varibles here
