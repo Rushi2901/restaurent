@@ -144,6 +144,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DATABASES = {
     'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
+print(os.getenv('DATABASE_URL'))
 
 # Cloudinary Configuration
 cloudinary.config(
