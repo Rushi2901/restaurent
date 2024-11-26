@@ -155,14 +155,13 @@ cloudinary.config(
 # Media storage settings using Cloudinary
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-MEDIA_URL = f'https://res.cloudinary.com/{os.getenv("CLOUDINARY_CLOUD_NAME")}/'
+MEDIA_URL = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 
 
 
 
-MEDIA_URL = '/media/'
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 
