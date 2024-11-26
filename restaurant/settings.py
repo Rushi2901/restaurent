@@ -34,7 +34,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',          # localhost
     'localhost',          # Also allow localhost
-    'restaurent-0ac8.onrender.com' , # Your ngrok URL
+    'restaurent-ff3s.onrender.com' , # Your ngrok URL
 ]
 
 
