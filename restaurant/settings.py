@@ -92,11 +92,14 @@ WSGI_APPLICATION = 'restaurant.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),        
-        'USER': os.getenv('DB_USER'),        
-        'PASSWORD': os.getenv('DB_PASSWORD'),  
-        'HOST': os.getenv('DB_HOST'),        
-        'PORT': os.getenv('DB_PORT', '5432'), 
+        'NAME': 'neondb',  # Database name
+        'USER': 'neondb_owner',  # Database username
+        'PASSWORD': 'TMl6ufVzD9YP',  # Database password
+        'HOST': 'ep-cool-rain-a5yhvnss.us-east-2.aws.neon.tech',  # Database host
+        'PORT': '5432',  # Default PostgreSQL port
+        'OPTIONS': {
+            'sslmode': 'require',  # Enable SSL
+        }
     }
 }
 
@@ -140,11 +143,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
-# Database Configuration
-DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
-}
-print(os.getenv('DATABASE_URL'))
+
 
 # Cloudinary Configuration
 cloudinary.config(
@@ -181,7 +180,7 @@ STRIPE_SECRET_KEY = 'sk_test_51QGfwUK8DvyAuoeWIgMTCXSAAob1kUP43wRTImTlOCyd507czp
 # WEBHOOK_SECRET_KEY =os.getenv('WEBHOOK_SECRET_KEY')
 WEBHOOK_SECRET_KEY = 'whsec_xQt2dfuYOmkWfAaurJXpowTro4JYv1BU'
 DOMAIN = "http://127.0.0.1:8000/"
-NGROK_URL='https://restaurent-0ac8.onrender.com/'  # this is a live website url i am not changing varibles here
+NGROK_URL='https://restaurent-ff3s.onrender.com/'  # this is a live website url i am not changing varibles here
 
 CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1',  # For localhost
