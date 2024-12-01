@@ -106,8 +106,10 @@ def loginform (request):
                 username = form.cleaned_data['username']
                 password = form.cleaned_data['password']
                 user = authenticate(username=username, password=password)
-                auth_login(request, user)
-                messages.success(request, "You Have Successfully Registered! Welcome!")
+                if user is not None :
+                    
+                    auth_login(request, user)
+                    messages.success(request, "You Have Successfully Registered! Welcome!")
                 if request.user.is_authenticated :
                     profile = request.user.first_name
                 else:

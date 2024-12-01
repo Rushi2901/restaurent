@@ -153,9 +153,10 @@ CLOUDINARY_STORAGE = {
 }
 
 
+
 # Media storage settings using Cloudinary
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
+MEDIA_URL='/media/'
 
 
 STATICFILES_DIRS = [

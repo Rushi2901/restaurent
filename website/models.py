@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib import admin
-
+from cloudinary_storage.storage import MediaCloudinaryStorage
 # Create your models here.
 class Category (models.Model):
     category_name =models.CharField(max_length=50,blank=False,primary_key=True)
@@ -17,7 +17,7 @@ class Item (models.Model):
     description = models.CharField(max_length=100)
     price = models.IntegerField()
     category = models.ForeignKey(Category,related_name='item_category',on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images' , blank=True,null=True)
+    image = models.ImageField(upload_to='images' , storage=MediaCloudinaryStorage(), blank=True,null=True)
 
     def __str__(self):
         return self.item_name
@@ -72,13 +72,13 @@ class Feedback (models.Model):
         return self.email + "   rating:" +str(self.rating)
     
 class Footer (models.Model):
-    phone =models.IntegerField(max_length=10 ,blank=False)
+    phone =models.IntegerField(blank=False)
     email = models.EmailField(blank=True)
     about = models.CharField(max_length=100 , blank=False)
     copyright = models.CharField(max_length=40 , blank=False)
     opening_days = models.CharField(max_length=50 , blank=False)
-    opening_time_from =models.IntegerField(max_length=2 )
-    opening_time_to =models.IntegerField(max_length=2)
+    opening_time_from =models.IntegerField()
+    opening_time_to =models.IntegerField()
 
     def clean(self) :
         if not (0< self.opening_time_from >13) and not (0< self.opening_time_to >13):
