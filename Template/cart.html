@@ -33,19 +33,17 @@
         <p>Shipping & taxes calculated at checkout</p>
         <label>
             <input type="checkbox" required>
-            I agree to <a href="#">Terms & Conditions</a>
+           
         </label>
         <div class="checkout-buttons">
             <form action="{% url 'checkout_session' %}" method="POST">
                 {% csrf_token %}
                 <button type="submit" class="checkout">Checkout</button>
             </form>
-            <button class="paypal">PayPal</button>
+            
         </div>
-        <div class="note-section">
-            <h3>Add a note</h3>
-            <textarea placeholder="Some words to In House team"></textarea>
-        </div>
+
+
     </div>
 </div>
 

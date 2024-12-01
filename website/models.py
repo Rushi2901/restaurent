@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib import admin
 from cloudinary_storage.storage import MediaCloudinaryStorage
+import cloudinary
+
+
 # Create your models here.
 class Category (models.Model):
     category_name =models.CharField(max_length=50,blank=False,primary_key=True)
@@ -21,6 +24,15 @@ class Item (models.Model):
 
     def __str__(self):
         return self.item_name
+
+    def delete(self, *args, **kwargs):
+        # Check if there is an image and delete it from Cloudinary
+        if self.image:
+            # Get the public ID of the image from the URL
+            public_id = self.image.name.split('/')[-1].split('.')[0]
+            cloudinary.uploader.destroy(public_id)
+        super().delete(*args, **kwargs)
+
 
 
 class Aboutus (models.Model):
